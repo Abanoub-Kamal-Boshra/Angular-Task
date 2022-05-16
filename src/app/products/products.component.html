@@ -1,0 +1,53 @@
+
+<ng-container>
+    <h1 class="text-center">{{StoreName | uppercase }}</h1>
+
+    <img [src]="StoreLogo" alt="logo" width="500" class="rounded mx-auto d-block">
+
+    <div *ngIf="Discount!=='NoDiscount' ; then discountBlock">
+    </div>
+    <ng-template #discountBlock>
+        <h3 class="text-center"> {{ "We offer an explicit discount of: " +  (Discount | percent) }} </h3>
+    </ng-template>
+    <br>
+
+    <div class="input-group">
+        <select class="custom-select m-3" id="inputGroupSelect01">
+            <option selected>Choose category</option>
+            <option *ngFor="let category of CategoryList">
+                {{category.name}}
+            </option>
+        </select>
+    </div>
+
+    <div *ngIf="IsRendered; then renderDone;">
+    </div>
+    <ng-template #renderDone>
+        <div *ngIf="IsPurshased; then buyingDone; else buyingDoesnotDone">
+        </div>
+    </ng-template>
+    
+    <ng-template #buyingDoesnotDone>
+        <div class="text-center">
+            <button class="btn btn-primary m-3" (click)="withDiscount()">With Discount</button>
+            <button class="btn btn-primary m-3" (click)="withoutDiscount()">Without Discount</button>
+            <router-outlet></router-outlet>
+        </div>
+    </ng-template>
+    
+    <ng-template #buyingDone>
+        <div class="text-center m-3">
+            <h1>{{"Thanks for purchasing from our Store " + ClientName}}</h1>
+        </div>
+    </ng-template>
+
+    <input class="m-3" type="text" [(ngModel)]="ClientName" >
+    {{ClientName}}
+
+    <br>
+    <div class="text-center">
+        <button type="button" class="btn btn-primary m-3" (click)="renderValues()">Show Items</button>
+        <button type="button" class="btn btn-primary m-3" (click)="doBuyingAction()">Buy</button>
+    </div>
+
+</ng-container>
